@@ -1,0 +1,41 @@
+version: "2.1"
+
+services:
+  cli:
+    environment:
+      # TODO: remove after Docksal 1.4.1 is released
+      - PROJECT_ROOT=/var/www
+      - DOCROOT
+  adminer:
+    hostname: adminer
+    image: adminer
+    labels:
+      - io.docksal.virtual-host=db.${VIRTUAL_HOST}
+  cloud9:
+    hostname: cloud9
+    image: hoadx/cloud9-alpine
+    environment:
+      - USERNAME=user
+      - PASSWORD=user
+    volumes:
+      - ${PROJECT_ROOT}/docroot:/workspace:rw
+    labels:
+      - io.docksal.virtual-host=ide.${VIRTUAL_HOST}
+  thelounge:
+    hostname: thelounge
+    image: linuxserver/thelounge
+    volumes:
+      - ${PROJECT_ROOT}/.thelounge:/config:rw
+    labels:
+      - io.docksal.virtual-host=irc.${VIRTUAL_HOST}
+  mail:
+    hostname: mail
+    image: mailhog/mailhog
+    expose:
+      - "80"
+    environment:
+      - MH_API_BIND_ADDR=0.0.0.0:80
+      - MH_UI_BIND_ADDR=0.0.0.0:80
+    labels:
+      - io.docksal.virtual-host=mail.${VIRTUAL_HOST}
+    user: root
