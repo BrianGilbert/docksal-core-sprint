@@ -44,6 +44,12 @@ Follow [Docksal environment setup instructions](http://docksal.readthedocs.io/en
     http://mail.drupal8.docksal
     ```
 
+To access db and ide use the following login:
+```
+userrname: user
+password: user
+```
+
 When the automated install is complete the command line output will display the admin username and password.
 
 ## More automation with 'fin init'
