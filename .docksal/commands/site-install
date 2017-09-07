@@ -4,7 +4,7 @@
 
 ## Initialize/reinstall site
 ##
-## Usage: fin init-site
+## Usage: fin site-install
 
 # Abort if anything fails
 set -e
