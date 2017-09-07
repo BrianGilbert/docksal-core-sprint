@@ -5,7 +5,8 @@ This is a docker based toolset for running Drupal core sprints.
 Features:
 
 - Drupal 8 HEAD
-- `fin init` example
+- `fin init` command - launches the stack, then triggers `fin site-install`
+- `fin site-install` command - installs Drupal
 
 ## Setup instructions
 
@@ -26,15 +27,11 @@ Follow [Docksal environment setup instructions](http://docksal.readthedocs.io/en
 
 2. Initialize the site
 
-    This will initialize local settings and install the site via drush
-
     ```
     fin init
     ```
 
-3. **On Windows** add `192.168.64.100  drupal8.docksal` to your hosts file
-
-4. Point your browser to the following
+3. Point your browser to the following
 
     ```
     http://drupal8.docksal
@@ -44,23 +41,32 @@ Follow [Docksal environment setup instructions](http://docksal.readthedocs.io/en
     http://mail.drupal8.docksal
     ```
 
-To access db and ide use the following login:
+## Credentials
+
+### Drupal
+
+http://drupal8.docksal
+
 ```
-userrname: user
+username: admin
+password: password
+```
+
+## Cloud9 IDE
+
+http://ide.drupal8.docksal
+
+```
+username: user
 password: user
 ```
 
-When the automated install is complete the command line output will display the admin username and password.
+## Database (Adminer)
 
-## More automation with 'fin init'
+http://db.drupal8.docksal
 
-Site provisioning can be automated using `fin init`, which calls the shell script in [.docksal/commands/init](.docksal/commands/init).  
-This script is meant to be modified per project. The one in this repo will give you a good example of advanced init script.
-
-Some common tasks that can be handled by the init script:
-
-- initialize local settings files for Docker Compose, Drupal, Behat, etc.
-- import DB or perform a site install
-- compile Sass
-- run DB updates, revert features, clear caches, etc.
-- enable/disable modules, update variables values
+```
+username: user
+password: user
+database: default
+```

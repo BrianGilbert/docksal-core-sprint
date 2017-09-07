@@ -1,11 +1,6 @@
 version: "2.1"
 
 services:
-  cli:
-    environment:
-      # TODO: remove after Docksal 1.4.1 is released
-      - PROJECT_ROOT=/var/www
-      - DOCROOT
   adminer:
     hostname: adminer
     image: adminer
