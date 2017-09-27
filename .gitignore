@@ -4,4 +4,4 @@
 .idea/
 .thelounge/
 docker-compose.yml
-
+docroot/*
