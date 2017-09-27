@@ -4,6 +4,4 @@
 .idea/
 .thelounge/
 docker-compose.yml
-docroot/.c9/
-docroot/sites/*/settings.local.php
-docroot/sites/*/files
+
