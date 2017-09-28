@@ -41,6 +41,18 @@ copy_settings_file()
 
 #-------------------------- Functions --------------------------------
 
+# Initialize docroot
+init_docroot ()
+{
+	cd ${PROJECT_ROOT}
+
+	sudo rm -rf ${DOCROOT}
+	unzip ./.docksal/drupal/drupal-8.5.x.zip -d ${DOCROOT}
+	cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+	#git apply -v ./.docksal/drupal/settings.patch
+	cd ${DOCROOT} && git pull
+}
+
 # Initialize local settings files
 init_settings ()
 {
@@ -82,8 +94,9 @@ site_install ()
 #-------------------------- Execution --------------------------------
 
 # Project initialization steps
-fix_permissions
+init_docroot
 init_settings
+fix_permissions
 time site_install
 
 #-------------------------- END: Execution --------------------------------
