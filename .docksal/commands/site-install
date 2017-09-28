@@ -55,6 +55,7 @@ init_docroot ()
 		else
 			git clone --depth 1 --branch 8.5.x http://git.drupal.org/project/drupal.git docroot
 			cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+			cd ${DOCROOT} && composer install
 	fi
 }
 
