@@ -15,6 +15,7 @@ set -e
 SITE_DIRECTORY="default"
 DOCROOT_PATH="${PROJECT_ROOT}/${DOCROOT}"
 SITEDIR_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}"
+SITEFILE_PATH="${DOCROOT_PATH}/sites/${SITE_DIRECTORY}/files"
 
 #-------------------------- END: Settings --------------------------------
 
@@ -46,25 +47,41 @@ init_docroot ()
 {
 	cd ${PROJECT_ROOT}
 
-	sudo rm -rf ${DOCROOT}
-	if [ -e ./.docksal/drupal/drupal-8.5.x.zip ]
+	if [ -e ${DOCROOT}/index.php ]
 		then
-			unzip ./.docksal/drupal/drupal-8.5.x.zip -d ${DOCROOT}
-			cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
-			cd ${DOCROOT} && git pull
+			echo "####
+# Keep local code (N) clean install of 8.5.x (Y):
+#
+# !!You don't need to hit enter!!.
+####"
+			read -n1 CLEAN
+			echo ""
+			if [[ ${CLEAN} =~ ^(y|Y)$ ]]; then
+				sudo rm -rf ${SITEFILE_PATH}
+				cd ${DOCROOT} && git checkout 8.5.x && git reset --hard && git pull
+			fi
 		else
-			git clone --depth 1 --branch 8.5.x http://git.drupal.org/project/drupal.git docroot
-			cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
-			cd ${DOCROOT} && composer install
+			if [ -e ./.docksal/drupal/drupal-8.5.x.zip ]
+				then
+					unzip ./.docksal/drupal/drupal-8.5.x.zip -d ${DOCROOT}
+					cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+					cd ${DOCROOT} && git pull
+				else
+					git clone --depth 1 --branch 8.5.x http://git.drupal.org/project/drupal.git docroot
+					cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+					cd ${DOCROOT} && composer install
+			fi
 	fi
 }
 
 # Initialize local settings files
 init_settings ()
 {
-	# Copy from settings templates
-	copy_settings_file "${PROJECT_ROOT}/.docksal/drupal/settings.php" "${SITEDIR_PATH}/settings.php"
-	copy_settings_file "${PROJECT_ROOT}/.docksal/drupal/settings.local.php" "${SITEDIR_PATH}/settings.local.php"
+	if [ ! -e sites/default/settings.local.php ]; then
+		# Copy from settings templates
+		copy_settings_file "${PROJECT_ROOT}/.docksal/drupal/settings.php" "${SITEDIR_PATH}/settings.php"
+		copy_settings_file "${PROJECT_ROOT}/.docksal/drupal/settings.local.php" "${SITEDIR_PATH}/settings.local.php"
+	fi
 }
 
 # Fix file/folder permissions
@@ -79,7 +96,7 @@ site_install ()
 {
 	cd ${DOCROOT_PATH}
 
-	drush site-install -y --site-name='My Drupal 8 Site'
+	drupal site-install -y --site-name='My Drupal 8 Site'
 }
 
 #-------------------------- END: Functions --------------------------------
