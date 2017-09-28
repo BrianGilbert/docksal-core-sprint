@@ -47,10 +47,15 @@ init_docroot ()
 	cd ${PROJECT_ROOT}
 
 	sudo rm -rf ${DOCROOT}
-	unzip ./.docksal/drupal/drupal-8.5.x.zip -d ${DOCROOT}
-	cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
-	#git apply -v ./.docksal/drupal/settings.patch
-	cd ${DOCROOT} && git pull
+	if [ -e ./.docksal/drupal/drupal-8.5.x.zip ]
+		then
+			unzip ./.docksal/drupal/drupal-8.5.x.zip -d ${DOCROOT}
+			cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+			cd ${DOCROOT} && git pull
+		else
+			git clone --depth 1 --branch 8.5.x http://git.drupal.org/project/drupal.git docroot
+			cp ./.docksal/drupal/example.gitignore ${DOCROOT}/.gitignore
+	fi
 }
 
 # Initialize local settings files
